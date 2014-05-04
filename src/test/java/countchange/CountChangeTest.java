@@ -21,6 +21,11 @@ public class CountChangeTest {
     }
 
     @Test
+    public void amountFourWithFourCoins() {
+        Assert.assertEquals(4, countChange.countChange(4, Arrays.asList(1, 2, 3, 4)));
+    }
+
+    @Test
     public void amount10WithOneCoin() {
         Assert.assertEquals(1, countChange.countChange(10, Arrays.asList(1)));
     }
@@ -43,6 +48,11 @@ public class CountChangeTest {
     @Test
     public void amount100WithOneCoinOf5And50And75() {
         Assert.assertEquals(4, countChange.countChange(100, Arrays.asList(5, 50, 75)));
+    }
+
+    @Test
+    public void amount105WithOneCoinOf5And50And75() {
+        Assert.assertEquals(4, countChange.countChange(105, Arrays.asList(5, 50, 75)));
     }
 
     @Test

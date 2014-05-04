@@ -19,24 +19,25 @@ public class CountChange {
     }
 
     public int countChange(int amount, List<Integer> coins) {
-        int total = 0;
-        List<Integer> visitedCoins = new ArrayList<>(coins);
-        for (int coin : coins) {
-            total += doCountChange(total, coin, 0, amount, visitedCoins);
-            if (visitedCoins.size() > 0) visitedCoins.remove(0);
-        }
-        return total;
+        return doCountChange(coins.get(0), 0, amount, coins);
     }
 
-    private int doCountChange(int total, int coin, int currentAmount, int amount, List<Integer> coins) {
-        int possibleAmount = coin + currentAmount;
-        if (possibleAmount > amount) return 0;
-        if (possibleAmount == amount) return 1;
-
-        else if (possibleAmount < amount) {
+    private int doCountChange(int coin, int currentAmount, int amount, List<Integer> coins) {
+        int total = 0;
+        int outstanding = coin + currentAmount;
+        if (outstanding > amount) return 0;
+        else if (outstanding == amount) return 1;
+        else {
             for (Integer currentCoin : coins) {
-                if (currentCoin + currentAmount <= amount) {
-                    total += doCountChange(total, currentCoin, possibleAmount, amount, coins);
+                outstanding = currentCoin + currentAmount;
+                if (outstanding == amount) {
+                    total += 1;
+                } else if (outstanding < amount) {
+                    List<Integer> newCoins = new ArrayList<>(coins);
+                    if (currentCoin != coin && newCoins.contains(coin)) {
+                        newCoins.remove((Integer) coin);
+                    }
+                    total += doCountChange(currentCoin, outstanding, amount, newCoins);
                 }
             }
         }

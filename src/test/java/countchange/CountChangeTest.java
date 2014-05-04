@@ -21,8 +21,43 @@ public class CountChangeTest {
     }
 
     @Test
+    public void amount10WithOneCoin() {
+        Assert.assertEquals(1, countChange.countChange(10, Arrays.asList(1)));
+    }
+
+    @Test
+    public void amount10WithOneCoinOf2And5() {
+        Assert.assertEquals(2, countChange.countChange(10, Arrays.asList(2, 5)));
+    }
+
+    @Test
+    public void amount8WithOneCoinOf2And3() {
+        Assert.assertEquals(2, countChange.countChange(10, Arrays.asList(2, 3)));
+    }
+
+    @Test
+    public void amount100WithOneCoinOf1And50() {
+        Assert.assertEquals(3, countChange.countChange(100, Arrays.asList(1, 50)));
+    }
+
+    @Test
+    public void amount100WithOneCoinOf5And50And75() {
+        Assert.assertEquals(4, countChange.countChange(100, Arrays.asList(5, 50, 75)));
+    }
+
+    @Test
+    public void amount150WithOneCoinOf5And50And75() {
+        Assert.assertEquals(6, countChange.countChange(150, Arrays.asList(5, 50, 75)));
+    }
+
+    @Test
     public void amountFourWithOneTwoCoins() {
         Assert.assertEquals(3, countChange.countChange(4, Arrays.asList(1, 2)));
+    }
+
+    @Test
+    public void amountFourWithThreeCoins() {
+        Assert.assertEquals(4, countChange.countChange(4, Arrays.asList(1, 2, 3)));
     }
 
     @Test
@@ -34,7 +69,6 @@ public class CountChangeTest {
     public void amountSixWithOneTwoCoins() {
         Assert.assertEquals(4, countChange.countChange(6, Arrays.asList(1, 2)));
     }
-
 
     @Test
     public void amountFiveWithOneTwoThreeCoins() {

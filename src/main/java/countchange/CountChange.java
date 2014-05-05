@@ -34,8 +34,7 @@ public class CountChange {
                     newCoins = newCoins.subList(fromIndex, newCoins.size());
                 }
                 int outstanding = currentCoin + currentAmount;
-                int currentTotal = doCountChange(currentCoin, outstanding, amount, newCoins);
-                total += currentTotal;
+                total += doCountChange(currentCoin, outstanding, amount, newCoins);
             }
         }
         return total;

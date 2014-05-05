@@ -13,7 +13,7 @@ The problem is as follows:
 
 *Its signature is as follows:*
 
-    **def countChange(money: Int, coins: List[Int]): Int**
+    def countChange(money: Int, coins: List[Int]): Int
 
 *Once again, you can make use of functions isEmpty, head and tail on the list of integers coins.*
 

@@ -2,6 +2,7 @@ package countchange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class CountChange {
     }
 
     public int countChange(int amount, List<Integer> coins) {
+        Collections.sort(coins);
         return doCountChange(coins.get(0), 0, amount, coins);
     }
 

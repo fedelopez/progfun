@@ -84,4 +84,9 @@ public class CountChangeTest {
     public void multiplesOf5() {
         Assert.assertEquals(1022, countChange.countChange(300, Arrays.asList(5, 10, 20, 50, 100, 200, 500)));
     }
+
+    @Test
+    public void multiplesOf5Unsorted() {
+        Assert.assertEquals(1022, countChange.countChange(300, Arrays.asList(5, 10, 20, 50, 500, 200, 100)));
+    }
 }

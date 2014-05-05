@@ -24,18 +24,18 @@ public class CountChange {
 
     private int doCountChange(int coin, int currentAmount, int amount, List<Integer> coins) {
         int total = 0;
-        if (currentAmount > amount) return 0;
-        else if (currentAmount == amount) {
-            return 1;
-        } else {
+        if (currentAmount == amount) {
+            total = 1;
+        } else if (currentAmount + coin <= amount) {
             for (Integer currentCoin : coins) {
                 List<Integer> newCoins = new ArrayList<>(coins);
-                int fromIndex = newCoins.indexOf(coin);
+                int fromIndex = newCoins.indexOf(currentCoin);
                 if (currentCoin != coin && fromIndex > -1) {
-                    newCoins = newCoins.subList(fromIndex + 1, newCoins.size());
+                    newCoins = newCoins.subList(fromIndex, newCoins.size());
                 }
                 int outstanding = currentCoin + currentAmount;
-                total += doCountChange(currentCoin, outstanding, amount, newCoins);
+                int currentTotal = doCountChange(currentCoin, outstanding, amount, newCoins);
+                total += currentTotal;
             }
         }
         return total;

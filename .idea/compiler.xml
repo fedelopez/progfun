@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="countchange" />
+        <module name="progfun" />
       </profile>
     </annotationProcessing>
   </component>

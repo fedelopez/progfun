@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/countchange.iml" filepath="$PROJECT_DIR$/countchange.iml" />
+      <module fileurl="file://$PROJECT_DIR$/progfun.iml" filepath="$PROJECT_DIR$/progfun.iml" />
     </modules>
   </component>
 </project>

@@ -1,9 +1,9 @@
-package countchange
+package week1
 
 /**
  * @author fede
  */
-object Main {
+object CountingChange {
 
   def countChange(amount: Int, coins: List[Int]): Int = {
 
@@ -24,4 +24,5 @@ object Main {
       doCountChange(goodCoins.head, 0, goodCoins)
     }
   }
+
 }

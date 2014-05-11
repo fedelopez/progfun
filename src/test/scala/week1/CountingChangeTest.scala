@@ -1,4 +1,4 @@
-package countchange
+package week1
 
 import org.scalatest.FunSuite
 
@@ -9,9 +9,9 @@ import org.scalatest.junit.JUnitRunner
  * @author fede
  */
 @RunWith(classOf[JUnitRunner])
-class MainTest extends FunSuite {
+class CountingChangeTest extends FunSuite {
 
-  import Main.countChange
+  import CountingChange.countChange
 
   test("countChange: example given in instructions") {
     assert(countChange(4, List(1, 2)) === 3)
@@ -56,4 +56,5 @@ class MainTest extends FunSuite {
   test("countChange: amount 2 with 1, 2") {
     assert(countChange(2, List(1, 2)) === 2)
   }
+
 }

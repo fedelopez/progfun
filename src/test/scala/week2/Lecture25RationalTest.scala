@@ -15,9 +15,8 @@ class Lecture25RationalTest extends FunSuite {
     val rational2 = new Lecture25Rational(4, 2)
 
     val res = rational1.add(rational2)
-    assert(res.numer === 14)
-    assert(res.denom === 4)
-
+    assert(res.numer === 7)
+    assert(res.denom === 2)
   }
 
   test("rationals substract") {
@@ -46,5 +45,26 @@ class Lecture25RationalTest extends FunSuite {
     assert(rational.numer === -3)
     assert(rational.denom === 2)
   }
+
+  test("rationals less") {
+    val rational1 = new Lecture25Rational(3, 2)
+    val rational2 = new Lecture25Rational(1, 2)
+    assert(!rational1.less(rational2))
+  }
+
+  test("rationals max") {
+    val rational1 = new Lecture25Rational(3, 2)
+    val rational2 = new Lecture25Rational(1, 2)
+    assert(rational1.max(rational2).numer === 3)
+    assert(rational1.max(rational2).denom === 2)
+  }
+
+  test("second constructor") {
+    val rational1 = new Lecture25Rational(3)
+    assert(rational1.numer === 3)
+    assert(rational1.denom === 1)
+
+  }
+
 
 }

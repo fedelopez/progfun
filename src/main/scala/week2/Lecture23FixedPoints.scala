@@ -3,7 +3,7 @@ package week2
 /**
  * @author fede
  */
-object Lecture24FixedPoints {
+object Lecture23FixedPoints {
 
   val tolerance = 0.0001
 

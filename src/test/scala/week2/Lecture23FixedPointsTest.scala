@@ -8,10 +8,10 @@ import org.scalatest.FunSuite
  * @author fede
  */
 @RunWith(classOf[JUnitRunner])
-class Lecture24FixedPointsTest extends FunSuite {
+class Lecture23FixedPointsTest extends FunSuite {
 
-  import Lecture24FixedPoints.sqrt
-  import Lecture24FixedPoints.sqrtWithAverageDamp
+  import Lecture23FixedPoints.sqrt
+  import Lecture23FixedPoints.sqrtWithAverageDamp
 
   test("fixed points") {
     println(sqrt(81))

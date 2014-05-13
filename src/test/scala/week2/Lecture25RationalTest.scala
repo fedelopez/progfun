@@ -17,6 +17,10 @@ class Lecture25RationalTest extends FunSuite {
     val res = rational1.add(rational2)
     assert(res.numer === 7)
     assert(res.denom === 2)
+
+    val res2 = rational1 add rational2
+    assert(res2.numer === 7)
+    assert(res2.denom === 2)
   }
 
   test("rationals substract") {

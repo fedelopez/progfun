@@ -170,4 +170,27 @@ class FunSetsTest extends FunSuite {
     }
   }
 
+  test("more maps") {
+    new TestSets {
+      def f: Int => Int = x => x * x
+
+      def s = map(s5, f)
+
+      print(printSet(s))
+
+      assert(contains(s, 4), "map 4")
+      assert(contains(s, 25), "map 25")
+      assert(contains(s, 36), "map 36")
+      assert(contains(s, 64), "map 64")
+
+      assert(!contains(s, 1), "map 1")
+      assert(!contains(s, 2), "map 2")
+      assert(!contains(s, 3), "map 4")
+      assert(!contains(s, 6), "map 6")
+      assert(!contains(s, 7), "map 6")
+      assert(!contains(s, 8), "map 6")
+      assert(!contains(s, 9), "map 6")
+    }
+  }
+
 }

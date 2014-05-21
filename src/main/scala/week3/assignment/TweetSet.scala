@@ -1,5 +1,7 @@
 package week3.assignment
 
+import scala.NoSuchElementException
+
 /**
  * A class to represent tweets.
  */
@@ -79,7 +81,7 @@ abstract class TweetSet {
    * Question: Should we implement this method here, or should it remain abstract
    * and be implemented in the subclasses?
    */
-  def descendingByRetweet: TweetList = ???
+  def descendingByRetweet: TweetList
 
 
   /**
@@ -108,6 +110,8 @@ abstract class TweetSet {
    * This method takes a function and applies it to every element in the set.
    */
   def foreach(f: Tweet => Unit): Unit
+
+  def isEmpty: Boolean
 }
 
 class Empty extends TweetSet {
@@ -132,6 +136,10 @@ class Empty extends TweetSet {
   def mostRetweeted: Nothing = throw new NoSuchElementException("mostRetweeted.empty")
 
   def mostRetweetedAcc(maybeMostRetweeted: Tweet): Tweet = maybeMostRetweeted
+
+  def descendingByRetweet: TweetList = Nil
+
+  def isEmpty: Boolean = true
 }
 
 class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
@@ -166,8 +174,10 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     right.foreach(f)
   }
 
-  def union(that: TweetSet): TweetSet =
-    ((left union right) union that) incl elem
+  def union(that: TweetSet): TweetSet = {
+    val filtered: TweetSet = that.filter(tw => !this.contains(tw))
+    ((left union right) union filtered) incl elem
+  }
 
   def mostRetweeted: Tweet = {
     remove(elem).mostRetweetedAcc(elem)
@@ -177,6 +187,20 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     if (maybeMostRetweeted.retweets >= elem.retweets) remove(elem).mostRetweetedAcc(maybeMostRetweeted)
     else remove(maybeMostRetweeted).mostRetweetedAcc(elem)
   }
+
+  def descendingByRetweet: TweetList = {
+
+    def descendingByRetweetAcc(accSet: TweetSet, accList: TweetList): TweetList = {
+      if (accSet.isEmpty) accList
+      else {
+        val retweeted: Tweet = accSet.mostRetweeted
+        new Cons(retweeted, descendingByRetweetAcc(accSet.remove(retweeted), accList))
+      }
+    }
+    descendingByRetweetAcc(this, Nil)
+  }
+
+  def isEmpty: Boolean = false
 }
 
 trait TweetList {

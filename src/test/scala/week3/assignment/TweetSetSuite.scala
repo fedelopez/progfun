@@ -101,6 +101,33 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("descending: other sets") {
+    val a1 = new Tweet("a", "a body", 3)
+    val b1 = new Tweet("b", "b body", 25)
+    val c1 = new Tweet("c", "c body", 7)
+    val d1 = new Tweet("d", "d body", 1)
+
+    val set11 = new Empty
+    val set21 = set11.incl(a1)
+    val set31 = set21.incl(b1)
+    val set4c1 = set31.incl(c1)
+    val set4d1 = set4c1.incl(d1)
+    val set51 = set4d1.incl(d1)
+
+    val trends = set51.descendingByRetweet
+    assert(trends.head.user == b1.user)
+    assert(trends.tail.head.user == c1.user)
+    assert(trends.tail.tail.head.user == a1.user)
+    assert(trends.tail.tail.tail.head.user == d1.user)
+  }
+
+  test("descending: empty") {
+    new TestSets {
+      val trends = set1.descendingByRetweet
+      assert(trends.isEmpty)
+    }
+  }
+
   test("mostRetweeted: empty") {
     new TestSets {
       intercept[NoSuchElementException] {

@@ -13,6 +13,7 @@ class TweetSetSuite extends FunSuite {
     val b = new Tweet("b", "b body", 20)
     val c = new Tweet("c", "c body", 7)
     val d = new Tweet("d", "d body", 9)
+    val a2 = new Tweet("a2", "a2 body", 21)
 
     val set1 = new Empty
     val set2 = set1.incl(a)
@@ -20,6 +21,7 @@ class TweetSetSuite extends FunSuite {
     val set4c = set3.incl(c)
     val set4d = set3.incl(d)
     val set5 = set4c.incl(d)
+    val set5a2 = set5.incl(a2)
   }
 
   def asSet(tweets: TweetSet): Set[Tweet] = {
@@ -44,6 +46,15 @@ class TweetSetSuite extends FunSuite {
     }
   }
 
+  test("filter: contains(a) on set5a2") {
+    new TestSets {
+      val result = set5a2.filter(tw => tw.user.contains("a"))
+      assert(size(result) === 2)
+      assert(result.contains(a))
+      assert(result.contains(a2))
+    }
+  }
+
   test("filter: > 8 on set5") {
     new TestSets {
       val result = set5.filter(tw => tw.retweets > 8)
@@ -51,6 +62,22 @@ class TweetSetSuite extends FunSuite {
       assert(result.contains(a))
       assert(result.contains(b))
       assert(result.contains(d))
+    }
+  }
+
+  test("filter: = 7 on set5") {
+    new TestSets {
+      val result = set5.filter(tw => tw.retweets == 7)
+      assert(size(result) === 1)
+      assert(result.contains(c))
+    }
+  }
+
+  test("filter: < 9 on set5") {
+    new TestSets {
+      val result = set5.filter(tw => tw.retweets < 9)
+      assert(size(result) === 1)
+      assert(result.contains(c))
     }
   }
 

@@ -17,28 +17,29 @@ class HuffmanTest extends FunSuite {
   import Huffman.singleton
   import Huffman.combine
   import Huffman.until
+  import Huffman.createCodeTree
 
   trait TestSets {
     val leafA: Leaf = new Leaf('a', 8)
-    val leafS: Leaf = new Leaf('s', 2)
-    val left: Fork = new Fork(leafA, leafS, List('a', 's'), 10)
+    val leafD: Leaf = new Leaf('d', 2)
+    val left: Fork = new Fork(leafA, leafD, List('a', 'd'), 10)
 
     val leafB: Leaf = new Leaf('b', 3)
     val leafC: Leaf = new Leaf('c', 1)
     val right: Fork = new Fork(leafB, leafC, List('b', 'c'), 4)
 
-    val tree: CodeTree = new Fork(left, right, List('a', 's', 'b', 'c'), 14)
+    val tree: CodeTree = new Fork(left, right, List('a', 'd', 'b', 'c'), 14)
   }
 
   test("weight: on leaf") {
     new TestSets {
-      assert(weight(leafS) == 2)
+      assert(weight(leafD) == 2)
     }
   }
 
   test("weight: on tree") {
     new TestSets {
-      val actual: CodeTree = new Fork(leafA, leafS, List('a', 's'), 10)
+      val actual: CodeTree = new Fork(leafA, leafD, List('a', 'd'), 10)
 
       assert(weight(actual) == 10)
     }
@@ -52,19 +53,19 @@ class HuffmanTest extends FunSuite {
 
   test("chars: on leaf") {
     new TestSets {
-      val actual: List[Char] = chars(leafS)
+      val actual: List[Char] = chars(leafD)
       assert(actual.size == 1)
-      assert(actual.head === 's')
+      assert(actual.head === leafD.char)
     }
   }
 
   test("chars: on tree") {
     new TestSets {
-      val actual: List[Char] = chars(new Fork(leafA, leafS, List('a', 's'), 10))
+      val actual: List[Char] = chars(new Fork(leafA, leafD, List('a', 'd'), 10))
 
       assert(actual.size == 2)
-      assert(actual.contains('a'))
-      assert(actual.contains('s'))
+      assert(actual.contains(leafA.char))
+      assert(actual.contains(leafD.char))
     }
   }
 
@@ -74,7 +75,7 @@ class HuffmanTest extends FunSuite {
 
       assert(actual.size == 4)
       assert(actual.contains('a'))
-      assert(actual.contains('s'))
+      assert(actual.contains('d'))
       assert(actual.contains('b'))
       assert(actual.contains('c'))
     }
@@ -210,7 +211,7 @@ class HuffmanTest extends FunSuite {
 
   test("singleton: leafs and fork") {
     new TestSets {
-      val list: List[CodeTree] = List(right, leafS, leafA)
+      val list: List[CodeTree] = List(right, leafD, leafA)
       assert(singleton(list) === false)
     }
   }
@@ -253,15 +254,15 @@ class HuffmanTest extends FunSuite {
 
   test("combine: four leafs") {
     new TestSets {
-      val result: List[CodeTree] = combine(List(leafC, leafS, leafB, leafA))
+      val result: List[CodeTree] = combine(List(leafC, leafD, leafB, leafA))
 
       assert(result.size === 3)
 
-      assert(weight(result.apply(0)) === weight(leafC) + weight(leafS))
+      assert(weight(result.apply(0)) === weight(leafC) + weight(leafD))
       val charsAt0: List[Char] = chars(result.apply(0))
       assert(charsAt0.size === 2)
       assert(charsAt0.apply(0) === leafC.char)
-      assert(charsAt0.apply(1) === leafS.char)
+      assert(charsAt0.apply(1) === leafD.char)
 
       assert(weight(result.apply(1)) === weight(leafB))
       val charsAt1: List[Char] = chars(result.apply(1))
@@ -278,15 +279,23 @@ class HuffmanTest extends FunSuite {
 
   test("until") {
     new TestSets {
-      val trees: List[CodeTree] = List(leafC, leafS, leafB, leafA)
+      val trees: List[CodeTree] = List(leafC, leafD, leafB, leafA)
 
       val result: List[CodeTree] = until(singleton, combine)(trees)
 
       assert(result.size === 1)
 
       val codeTree: CodeTree = result.apply(0)
-      assert(weight(codeTree) === weight(leafA) + weight(leafB) + weight(leafC) + weight(leafS))
-      assert(chars(codeTree) === List(leafC.char, leafS.char, leafB.char, leafA.char))
+      assert(weight(codeTree) === weight(leafA) + weight(leafB) + weight(leafC) + weight(leafD))
+      assert(chars(codeTree) === List(leafC.char, leafD.char, leafB.char, leafA.char))
+    }
+  }
+
+  test("createCodeTree") {
+    new TestSets {
+
+      val result: CodeTree = createCodeTree(List('a', 'd', 'a', 'd', 'b', 'c', 'b', 'a'))
+      assert(weight(result) === 8)
     }
   }
 

@@ -14,7 +14,7 @@ object SortingLists {
 
   def insert(x: Int, xs: scala.List[Int]): scala.List[Int] = xs match {
     case scala.List() => scala.List(x)
-    case head :: tail => if (x > head) head :: insert(x, tail) else x :: insert(head, tail)
+    case head :: tail => if (x > head) head :: insert(x, tail) else x :: xs
   }
 
   def main(args: Array[String]) {

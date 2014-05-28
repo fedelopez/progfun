@@ -104,12 +104,21 @@ object Huffman {
    * head of the list should have the smallest weight), where the weight
    * of a leaf is the frequency of the character.
    */
-  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = ???
+  def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = freqs match {
+    case List() => List()
+    case head :: tail => insert(head, makeOrderedLeafList(tail))
+  }
+
+  private def insert(pair: (Char, Int), xs: List[Leaf]): List[Leaf] = xs match {
+    case List() => List(new Leaf(pair._1, pair._2))
+    case head :: tail => if (pair._2 > head.weight) head :: insert(pair, tail) else new Leaf(pair._1, pair._2) :: xs
+  }
+
 
   /**
    * Checks whether the list `trees` contains only one single code tree.
    */
-  def singleton(trees: List[CodeTree]): Boolean = ???
+  def singleton(trees: List[CodeTree]): Boolean = trees.size == 1
 
   /**
    * The parameter `trees` of this function is a list of code trees ordered
@@ -123,7 +132,9 @@ object Huffman {
    * If `trees` is a list of less than two elements, that list should be returned
    * unchanged.
    */
-  def combine(trees: List[CodeTree]): List[CodeTree] = ???
+  def combine(trees: List[CodeTree]): List[CodeTree] =
+    if (trees.size < 2) trees
+    else makeCodeTree(trees.apply(0), trees.apply(1)) :: trees.tail.tail
 
   /**
    * This function will be called in the following way:
@@ -142,7 +153,12 @@ object Huffman {
    * the example invocation. Also define the return type of the `until` function.
    * - try to find sensible parameter names for `xxx`, `yyy` and `zzz`.
    */
-  //def until(xxx: ???, yyy: ???)(zzz: ???): ??? = ???
+  def until(singletonAcc: List[CodeTree] => Boolean, combineAcc: List[CodeTree] => List[CodeTree])(treeList: List[CodeTree]): List[CodeTree] = {
+    val combined: List[CodeTree] = combineAcc(treeList)
+    if (singletonAcc(combined)) combined
+    else until(singletonAcc, combineAcc)(combined)
+  }
+
 
   /**
    * This function creates a code tree which is optimal to encode the text `chars`.

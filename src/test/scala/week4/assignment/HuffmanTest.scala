@@ -13,6 +13,10 @@ class HuffmanTest extends FunSuite {
   import Huffman.times
   import Huffman.weight
   import Huffman.increaseOccurrences
+  import Huffman.makeOrderedLeafList
+  import Huffman.singleton
+  import Huffman.combine
+  import Huffman.until
 
   trait TestSets {
     val leafA: Leaf = new Leaf('a', 8)
@@ -145,18 +149,145 @@ class HuffmanTest extends FunSuite {
   }
 
 
-  test("increaseOccurrences: element does not exist") {
-    val res: List[(Char, Int)] = increaseOccurrences('a', List(('b', 4)))
+  test("makeOrderedLeafList: one element") {
+    val res: List[Leaf] = makeOrderedLeafList(List(('a', 3)))
+
+    assert(res.size == 1)
+
+    val leaf: Leaf = res.apply(0)
+    assert(leaf.char === 'a')
+    assert(leaf.weight === 3)
+  }
+
+  test("makeOrderedLeafList: two elements") {
+    val res: List[Leaf] = makeOrderedLeafList(List(('a', 3), ('b', 2)))
 
     assert(res.size == 2)
 
-    val pair1: (Char, Int) = res.apply(0)
-    assert(pair1._1 === 'b')
-    assert(pair1._2 === 4)
+    val leaf1: Leaf = res.apply(0)
+    assert(leaf1.char === 'b')
+    assert(leaf1.weight === 2)
 
-    val pair2: (Char, Int) = res.apply(1)
-    assert(pair2._1 === 'a')
-    assert(pair2._2 === 1)
+    val leaf2: Leaf = res.apply(1)
+    assert(leaf2.char === 'a')
+    assert(leaf2.weight === 3)
+  }
+
+  test("makeOrderedLeafList: three elements") {
+    val res: List[Leaf] = makeOrderedLeafList(List(('a', 3), ('f', 1), ('b', 2)))
+
+    assert(res.size == 3)
+
+    val leaf1: Leaf = res.apply(0)
+    assert(leaf1.char === 'f')
+    assert(leaf1.weight === 1)
+
+    val leaf2: Leaf = res.apply(1)
+    assert(leaf2.char === 'b')
+    assert(leaf2.weight === 2)
+
+    val leaf3: Leaf = res.apply(2)
+    assert(leaf3.char === 'a')
+    assert(leaf3.weight === 3)
+  }
+
+  /**
+   * https://class.coursera.org/progfun-004/forum/thread?thread_id=820
+   * is empty list a singleton? no
+   */
+  test("singleton: empty list") {
+    new TestSets {
+      assert(singleton(List()) === false)
+    }
+  }
+
+  test("singleton: leafs only") {
+    new TestSets {
+      val list: List[Leaf] = List(leafA, leafB, leafC)
+      assert(singleton(list) === false)
+    }
+  }
+
+  test("singleton: leafs and fork") {
+    new TestSets {
+      val list: List[CodeTree] = List(right, leafS, leafA)
+      assert(singleton(list) === false)
+    }
+  }
+
+  test("singleton: forks only") {
+    new TestSets {
+      val list: List[CodeTree] = List(right, left)
+      assert(singleton(list) === false)
+    }
+  }
+
+  test("singleton: true") {
+    new TestSets {
+      val list: List[CodeTree] = List(tree)
+      assert(singleton(list) === true)
+    }
+  }
+
+  test("combine: if list has less than two elements, that list should be returned unchanged") {
+    new TestSets {
+      val result: List[CodeTree] = combine(List(tree))
+
+      assert(result.size === 1)
+
+      val codeTree: CodeTree = result.apply(0)
+      assert(weight(codeTree) === weight(tree))
+    }
+  }
+
+  test("combine: two leafs") {
+    new TestSets {
+      val result: List[CodeTree] = combine(List(leafA, leafB))
+
+      assert(result.size === 1)
+
+      val codeTree: CodeTree = result.apply(0)
+      assert(weight(codeTree) === weight(leafA) + weight(leafB))
+    }
+  }
+
+  test("combine: four leafs") {
+    new TestSets {
+      val result: List[CodeTree] = combine(List(leafC, leafS, leafB, leafA))
+
+      assert(result.size === 3)
+
+      assert(weight(result.apply(0)) === weight(leafC) + weight(leafS))
+      val charsAt0: List[Char] = chars(result.apply(0))
+      assert(charsAt0.size === 2)
+      assert(charsAt0.apply(0) === leafC.char)
+      assert(charsAt0.apply(1) === leafS.char)
+
+      assert(weight(result.apply(1)) === weight(leafB))
+      val charsAt1: List[Char] = chars(result.apply(1))
+      assert(charsAt1.size === 1)
+      assert(charsAt1.apply(0) === leafB.char)
+
+      assert(weight(result.apply(2)) === weight(leafA))
+      val charsAt2: List[Char] = chars(result.apply(2))
+      assert(charsAt2.size === 1)
+      assert(charsAt2.apply(0) === leafA.char)
+
+    }
+  }
+
+  test("until") {
+    new TestSets {
+      val trees: List[CodeTree] = List(leafC, leafS, leafB, leafA)
+
+      val result: List[CodeTree] = until(singleton, combine)(trees)
+
+      assert(result.size === 1)
+
+      val codeTree: CodeTree = result.apply(0)
+      assert(weight(codeTree) === weight(leafA) + weight(leafB) + weight(leafC) + weight(leafS))
+      assert(chars(codeTree) === List(leafC.char, leafS.char, leafB.char, leafA.char))
+    }
   }
 
 }

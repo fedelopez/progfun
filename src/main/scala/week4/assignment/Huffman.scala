@@ -185,23 +185,11 @@ object Huffman {
   def decode(tree: CodeTree, bits: List[Bit]): List[Char] = {
 
     def decodeAcc(currentNode: CodeTree, bitsAcc: List[Bit], decoded: List[Char]): List[Char] = currentNode match {
-      case Leaf(c, w) => {
-        if (bitsAcc.isEmpty) {
-          List(c)
-        }
-        else {
-          c :: decodeAcc(tree, bitsAcc, decoded)
-        }
+      case Leaf(c, w) => if (bitsAcc.isEmpty) List(c) else c :: decodeAcc(tree, bitsAcc, decoded)
+      case Fork(left, right, chars, w) => {
+        if (bitsAcc.head == 0) decoded ::: decodeAcc(left, bitsAcc.tail, decoded)
+        else decoded ::: decodeAcc(right, bitsAcc.tail, decoded)
       }
-      case Fork(left, right, chars, w) =>
-        if (bitsAcc.isEmpty) {
-          print(decoded)
-        }
-        if (bitsAcc.head == 0) {
-          decoded ::: decodeAcc(left, bitsAcc.tail, decoded)
-        } else {
-          decoded ::: decodeAcc(right, bitsAcc.tail, decoded)
-        }
     }
     decodeAcc(tree, bits, List())
   }

@@ -18,6 +18,7 @@ class HuffmanTest extends FunSuite {
   import Huffman.combine
   import Huffman.until
   import Huffman.createCodeTree
+  import Huffman.decode
 
   trait TestSets {
     val leafA: Leaf = new Leaf('a', 8)
@@ -95,6 +96,30 @@ class HuffmanTest extends FunSuite {
     val second: (Char, Int) = actual.apply(1)
     assert(second._1 === 'b')
     assert(second._2 === 1)
+  }
+
+  test("times: multiple characters") {
+    val list: List[Char] = List('a', 'd', 'a', 'd', 'b', 'c', 'b', 'a')
+
+    val actual: List[(Char, Int)] = times(list)
+
+    assert(actual.size == 4)
+
+    val first: (Char, Int) = actual.apply(0)
+    assert(first._1 === 'a')
+    assert(first._2 === 3)
+
+    val second: (Char, Int) = actual.apply(1)
+    assert(second._1 === 'd')
+    assert(second._2 === 2)
+
+    val third: (Char, Int) = actual.apply(2)
+    assert(third._1 === 'b')
+    assert(third._2 === 2)
+
+    val fourth: (Char, Int) = actual.apply(3)
+    assert(fourth._1 === 'c')
+    assert(fourth._2 === 1)
   }
 
   test("increaseOccurrences: empty list") {
@@ -243,7 +268,7 @@ class HuffmanTest extends FunSuite {
 
   test("combine: two leafs") {
     new TestSets {
-      val result: List[CodeTree] = combine(List(leafA, leafB))
+      val result: List[CodeTree] = combine(List(leafB, leafA))
 
       assert(result.size === 1)
 
@@ -296,6 +321,14 @@ class HuffmanTest extends FunSuite {
 
       val result: CodeTree = createCodeTree(List('a', 'd', 'a', 'd', 'b', 'c', 'b', 'a'))
       assert(weight(result) === 8)
+    }
+  }
+
+  test("decode") {
+    new TestSets {
+
+      val result: List[Char] = decode(Huffman.frenchCode, Huffman.secret)
+      print(result)
     }
   }
 

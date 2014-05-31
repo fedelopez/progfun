@@ -4,7 +4,7 @@ import org.scalatest.FunSuite
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import week4.assignment.Huffman.{CodeTree, Fork, Leaf}
+import week4.assignment.Huffman.{Bit, CodeTree, Fork, Leaf}
 
 @RunWith(classOf[JUnitRunner])
 class HuffmanTest extends FunSuite {
@@ -19,6 +19,7 @@ class HuffmanTest extends FunSuite {
   import Huffman.until
   import Huffman.createCodeTree
   import Huffman.decode
+  import Huffman.encode
 
   trait TestSets {
     val leafA: Leaf = new Leaf('a', 8)
@@ -326,9 +327,20 @@ class HuffmanTest extends FunSuite {
 
   test("decode") {
     new TestSets {
-
       val result: List[Char] = decode(Huffman.frenchCode, Huffman.secret)
       print(result)
+    }
+  }
+
+  test("encode") {
+    new TestSets {
+      val result: List[Bit] = encode(Huffman.frenchCode)(List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l'))
+
+      println("Actual   : " + result)
+      println("Expected : " + Huffman.secret)
+
+      assert(result.length === Huffman.secret.length)
+      assert(result.equals(Huffman.secret))
     }
   }
 

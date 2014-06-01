@@ -273,7 +273,6 @@ object Huffman {
       case Leaf(c, w) => List((c, currentBits.reverse))
       case Fork(left, right, chars, w) => mergeCodeTables(convertAcc(left, 0 :: currentBits), convertAcc(right, 1 :: currentBits))
     }
-
     convertAcc(tree, List())
   }
 

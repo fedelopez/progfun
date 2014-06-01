@@ -22,6 +22,11 @@ class HuffmanTest extends FunSuite {
     val tree: CodeTree = new Fork(left, right, List('a', 'd', 'b', 'c'), 14)
   }
 
+  trait TestTrees {
+    val t1 = Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5)
+    val t2 = Fork(Fork(Leaf('a', 2), Leaf('b', 3), List('a', 'b'), 5), Leaf('d', 4), List('a', 'b', 'd'), 9)
+  }
+
   test("weight: on leaf") {
     new TestSets {
       assert(weight(leafD) == 2)
@@ -164,7 +169,6 @@ class HuffmanTest extends FunSuite {
     assert(pair3._2 === 9)
   }
 
-
   test("makeOrderedLeafList: one element") {
     val res: List[Leaf] = makeOrderedLeafList(List(('a', 3)))
 
@@ -205,6 +209,10 @@ class HuffmanTest extends FunSuite {
     val leaf3: Leaf = res.apply(2)
     assert(leaf3.char === 'a')
     assert(leaf3.weight === 3)
+  }
+
+  test("makeOrderedLeafList for some frequency table") {
+    assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 3)))
   }
 
   /**
@@ -330,6 +338,12 @@ class HuffmanTest extends FunSuite {
 
       assert(result.length === Huffman.secret.length)
       assert(result.equals(Huffman.secret))
+    }
+  }
+
+  test("decode and encode a very short text should be identity") {
+    new TestTrees {
+      assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
 

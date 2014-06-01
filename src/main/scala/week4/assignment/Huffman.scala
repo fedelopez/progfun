@@ -271,7 +271,7 @@ object Huffman {
 
     def convertAcc(currentNode: CodeTree, currentBits: List[Bit]): CodeTable = currentNode match {
       case Leaf(c, w) => List((c, currentBits.reverse))
-      case Fork(left, right, chars, w) => convertAcc(left, 0 :: currentBits) ::: convertAcc(right, 1 :: currentBits)
+      case Fork(left, right, chars, w) => mergeCodeTables(convertAcc(left, 0 :: currentBits), convertAcc(right, 1 :: currentBits))
     }
 
     convertAcc(tree, List())
@@ -282,7 +282,7 @@ object Huffman {
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
    */
-  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = ???
+  def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = a ::: b
 
   /**
    * This function encodes `text` according to the code tree `tree`.
@@ -290,6 +290,16 @@ object Huffman {
    * To speed up the encoding process, it first converts the code tree to a code table
    * and then uses it to perform the actual encoding.
    */
-  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = ???
+  def quickEncode(tree: CodeTree)(text: List[Char]): List[Bit] = {
+
+    val codeTable: CodeTable = convert(tree)
+
+    def quickEncodeAcc(textAcc: List[Char], encodedAcc: List[Bit]): List[Bit] = {
+      if (textAcc.length == 1) codeBits(codeTable)(textAcc.head)
+      else codeBits(codeTable)(textAcc.head) ::: quickEncodeAcc(textAcc.tail, encodedAcc)
+    }
+    quickEncodeAcc(text, List())
+  }
+
 
 }

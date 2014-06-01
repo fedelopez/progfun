@@ -354,7 +354,7 @@ class HuffmanTest extends FunSuite {
 
       val codeTable: CodeTable = List(('h', List(0, 1, 1, 1, 0, 1)), ('u', List(1, 1, 1, 1, 0, 1)), ('f', List(1, 1, 1, 1, 0, 1)))
 
-      private val result: Huffman.CodeTable = convert(left)
+      val result: Huffman.CodeTable = convert(left)
 
       assert(result.length === 2)
       assert(codeBits(result)(leafA.char).equals(List(0)))
@@ -363,12 +363,29 @@ class HuffmanTest extends FunSuite {
   }
 
   test("convert french code") {
-    new TestSets {
+    val result: Huffman.CodeTable = convert(frenchCode)
+    print(result)
+    assert(codeBits(result)('h').equals(List(0, 0, 1, 1, 1, 0, 1)))
+  }
 
-      val result: Huffman.CodeTable = convert(frenchCode)
+  test("merge code tables") {
+    val result: CodeTable = mergeCodeTables(List(('f', List(0, 0, 1, 1, 0, 1))), List(('z', List(0, 0, 1, 1, 1, 0, 0, 0, 0))))
 
-      assert(codeBits(result)('h').equals(List(0, 0, 1, 1, 1, 0, 1)))
-    }
+    assert(result.length == 2)
+    assert(codeBits(result)('f').equals(List(0, 0, 1, 1, 0, 1)))
+    assert(codeBits(result)('z').equals(List(0, 0, 1, 1, 1, 0, 0, 0, 0)))
+  }
+
+  test("quickEncode") {
+
+    val result1: List[Bit] = encode(Huffman.frenchCode)(List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l'))
+    val result2: List[Bit] = quickEncode(Huffman.frenchCode)(List('h', 'u', 'f', 'f', 'm', 'a', 'n', 'e', 's', 't', 'c', 'o', 'o', 'l'))
+
+    println(result1)
+    println(result2)
+
+    assert(result1.length == result2.length)
+    assert(result2.equals(Huffman.secret))
   }
 
 }

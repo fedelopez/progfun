@@ -4,22 +4,11 @@ import org.scalatest.FunSuite
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import week4.assignment.Huffman.{Bit, CodeTree, Fork, Leaf}
 
 @RunWith(classOf[JUnitRunner])
 class HuffmanTest extends FunSuite {
 
-  import Huffman.chars
-  import Huffman.times
-  import Huffman.weight
-  import Huffman.increaseOccurrences
-  import Huffman.makeOrderedLeafList
-  import Huffman.singleton
-  import Huffman.combine
-  import Huffman.until
-  import Huffman.createCodeTree
-  import Huffman.decode
-  import Huffman.encode
+  import Huffman._
 
   trait TestSets {
     val leafA: Leaf = new Leaf('a', 8)
@@ -341,6 +330,44 @@ class HuffmanTest extends FunSuite {
 
       assert(result.length === Huffman.secret.length)
       assert(result.equals(Huffman.secret))
+    }
+  }
+
+  test("code bits") {
+    val codeTable: CodeTable = List(('h', List(0, 1, 1, 1, 0, 1)), ('u', List(1, 1, 1, 1, 0, 1)), ('f', List(1, 1, 1, 1, 0, 1)))
+
+    assert(codeBits(codeTable)('h').equals(List(0, 1, 1, 1, 0, 1)))
+    assert(codeBits(codeTable)('u').equals(List(1, 1, 1, 1, 0, 1)))
+    assert(codeBits(codeTable)('f').equals(List(1, 1, 1, 1, 0, 1)))
+  }
+
+  test("code bits: element not found") {
+    val codeTable: CodeTable = List(('h', List(0, 1, 1, 1, 0, 1)), ('u', List(1, 1, 1, 1, 0, 1)), ('f', List(1, 1, 1, 1, 0, 1)))
+
+    intercept[NoSuchElementException] {
+      codeBits(codeTable)('a')
+    }
+  }
+
+  test("convert") {
+    new TestSets {
+
+      val codeTable: CodeTable = List(('h', List(0, 1, 1, 1, 0, 1)), ('u', List(1, 1, 1, 1, 0, 1)), ('f', List(1, 1, 1, 1, 0, 1)))
+
+      private val result: Huffman.CodeTable = convert(left)
+
+      assert(result.length === 2)
+      assert(codeBits(result)(leafA.char).equals(List(0)))
+      assert(codeBits(result)(leafD.char).equals(List(1)))
+    }
+  }
+
+  test("convert french code") {
+    new TestSets {
+
+      val result: Huffman.CodeTable = convert(frenchCode)
+
+      assert(codeBits(result)('h').equals(List(0, 0, 1, 1, 1, 0, 1)))
     }
   }
 

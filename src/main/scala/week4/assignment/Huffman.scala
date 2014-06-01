@@ -222,17 +222,17 @@ object Huffman {
    */
   def encode(tree: CodeTree)(text: List[Char]): List[Bit] = {
 
-    def encodeAcc(currentNode: CodeTree, textAcc: List[Char], currentBits: List[Bit]): List[Bit] = currentNode match {
+    def encodeAcc(currentNode: CodeTree, textAcc: List[Char], bitsAcc: List[Bit]): List[Bit] = currentNode match {
       case Leaf(c, w) => {
         if (textAcc.head == c) {
-          if (textAcc.length == 1) currentBits.reverse
-          else currentBits.reverse ::: encodeAcc(tree, textAcc.tail, List[Bit]())
+          if (textAcc.length == 1) bitsAcc.reverse
+          else bitsAcc.reverse ::: encodeAcc(tree, textAcc.tail, List[Bit]())
         }
         else List()
       }
       case Fork(left, right, chars, w) => {
         if (chars.contains(textAcc.head)) {
-          encodeAcc(left, textAcc, 0 :: currentBits) ::: encodeAcc(right, textAcc, 1 :: currentBits)
+          encodeAcc(left, textAcc, 0 :: bitsAcc) ::: encodeAcc(right, textAcc, 1 :: bitsAcc)
         }
         else List()
       }
@@ -248,7 +248,16 @@ object Huffman {
    * This function returns the bit sequence that represents the character `char` in
    * the code table `table`.
    */
-  def codeBits(table: CodeTable)(char: Char): List[Bit] = ???
+  def codeBits(table: CodeTable)(char: Char): List[Bit] = {
+
+    def codeBitsAcc(tableAcc: CodeTable)(char: Char): List[Bit] = {
+      if (tableAcc.head._1 == char) tableAcc.head._2
+      else codeBitsAcc(tableAcc.tail)(char)
+    }
+
+    codeBitsAcc(table)(char)
+  }
+
 
   /**
    * Given a code tree, create a code table which contains, for every character in the
@@ -258,7 +267,15 @@ object Huffman {
    * a valid code tree that can be represented as a code table. Using the code tables of the
    * sub-trees, think of how to build the code table for the entire tree.
    */
-  def convert(tree: CodeTree): CodeTable = ???
+  def convert(tree: CodeTree): CodeTable = {
+
+    def convertAcc(currentNode: CodeTree, currentBits: List[Bit]): CodeTable = currentNode match {
+      case Leaf(c, w) => List((c, currentBits.reverse))
+      case Fork(left, right, chars, w) => convertAcc(left, 0 :: currentBits) ::: convertAcc(right, 1 :: currentBits)
+    }
+
+    convertAcc(tree, List())
+  }
 
   /**
    * This function takes two code tables and merges them into one. Depending on how you

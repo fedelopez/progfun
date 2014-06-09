@@ -78,30 +78,32 @@ object Anagrams {
 
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] = ???
+  def wordAnagrams(word: Word): List[Word] =
+    dictionaryByOccurrences.filter(tuple => tuple._2.contains(word)).head._2
 
-  /** Returns the list of all subsets of the occurrence list.
-    * This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
-    * is a subset of `List(('k', 1), ('o', 1))`.
-    * It also include the empty subset `List()`.
-    *
-    * Example: the subsets of the occurrence list `List(('a', 2), ('b', 2))` are:
-    *
-    * List(
-    * List(),
-    * List(('a', 1)),
-    * List(('a', 2)),
-    * List(('b', 1)),
-    * List(('a', 1), ('b', 1)),
-    * List(('a', 2), ('b', 1)),
-    * List(('b', 2)),
-    * List(('a', 1), ('b', 2)),
-    * List(('a', 2), ('b', 2))
-    * )
-    *
-    * Note that the order of the occurrence list subsets does not matter -- the subsets
-    * in the example above could have been displayed in some other order.
-    */
+  /**
+   * Returns the list of all subsets of the occurrence list.
+   * This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
+   * is a subset of `List(('k', 1), ('o', 1))`.
+   * It also include the empty subset `List()`.
+   *
+   * Example: the subsets of the occurrence list `List(('a', 2), ('b', 2))` are:
+   *
+   * List(
+   * List(),
+   * List(('a', 1)),
+   * List(('a', 2)),
+   * List(('b', 1)),
+   * List(('a', 1), ('b', 1)),
+   * List(('a', 2), ('b', 1)),
+   * List(('b', 2)),
+   * List(('a', 1), ('b', 2)),
+   * List(('a', 2), ('b', 2))
+   * )
+   *
+   * Note that the order of the occurrence list subsets does not matter -- the subsets
+   * in the example above could have been displayed in some other order.
+   */
   def combinations(occurrences: Occurrences): List[Occurrences] = ???
 
   /**
@@ -115,7 +117,9 @@ object Anagrams {
    * Note: the resulting value is an occurrence - meaning it is sorted
    * and has no zero-entries.
    */
-  def subtract(x: Occurrences, y: Occurrences): Occurrences = ???
+  def subtract(x: Occurrences, y: Occurrences): Occurrences =
+    if (y.isEmpty) x
+    else for (x1 <- x; y1 <- y if x1._1 != y1._1) yield x1
 
   /**
    * Returns a list of all anagram sentences of the given sentence.

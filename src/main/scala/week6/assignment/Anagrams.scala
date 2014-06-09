@@ -43,12 +43,16 @@ object Anagrams {
     val sorted: String = word.toLowerCase
     val res: Map[(Char, Int), String] = sorted groupBy (c => (c, sorted.count(char => char == c)))
     val map: Map[Char, Int] = for (tuple <- res) yield tuple._1
-    map.toList.sortWith((tuple1, tuple2) => tuple1._1 < tuple2._1)
+    map.toList.sortWith((t1, t2) => t1._1 < t2._1)
   }
 
 
   /** Converts a sentence into its character occurrence list. */
-  def sentenceOccurrences(s: Sentence): Occurrences = ???
+  def sentenceOccurrences(s: Sentence): Occurrences = {
+    val map: List[Char] = s.flatMap(word => word)
+    wordOccurrences(map mkString "")
+  }
+
 
   /**
    * The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all

@@ -12,6 +12,14 @@ class AnagramsTest extends FunSuite {
 
   import Anagrams._
 
+  test("playground") {
+
+    val map: List[Char] = List("abcd", "ea").flatMap(word => word)
+
+    print(map mkString "")
+
+  }
+
   test("wordOccurrences: abcd") {
     val res: Anagrams.Occurrences = wordOccurrences("abcd")
     assert(res === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
@@ -23,6 +31,10 @@ class AnagramsTest extends FunSuite {
 
   test("sentenceOccurrences: abcd e") {
     assert(sentenceOccurrences(List("abcd", "e")) === List(('a', 1), ('b', 1), ('c', 1), ('d', 1), ('e', 1)))
+  }
+
+  test("sentenceOccurrences: abcd ea ac") {
+    assert(sentenceOccurrences(List("abcd", "ea", "ac")) === List(('a', 3), ('b', 1), ('c', 2), ('d', 1), ('e', 1)))
   }
 
   test("dictionaryByOccurrences.get: eat") {

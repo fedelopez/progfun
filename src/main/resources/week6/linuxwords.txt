@@ -1321,7 +1321,6 @@ Algeria
 Algerian
 Algiers
 alginate
-ALGOL
 Algol
 Algonquian
 Algonquin
@@ -2660,7 +2659,6 @@ aroused
 arouses
 arousing
 ARPA
-ARPANET
 Arpanet
 arpeggio
 arpeggios
@@ -4080,8 +4078,6 @@ bashes
 bashful
 bashfulness
 bashing
-BASIC
-Basic
 basic
 basically
 basics
@@ -6847,9 +6843,7 @@ calamity
 Calceolaria
 calcify
 calcium
-CALCOMP
 CalComp
-Calcomp
 calculate
 calculated
 calculates
@@ -7612,7 +7606,6 @@ centralized
 centralizes
 centralizing
 centrally
-CENTREX
 Centrex
 centrifugal
 centrifuge
@@ -8705,7 +8698,6 @@ cobble
 cobbler
 cobblers
 cobblestone
-COBOL
 Cobol
 cobra
 cobweb
@@ -13907,9 +13899,7 @@ duplicator
 duplicators
 duplicity
 DuPont
-Dupont
 DuPonts
-Duponts
 Duquesne
 durabilities
 durability
@@ -17340,7 +17330,6 @@ fortiori
 fortitude
 fortnight
 fortnightly
-FORTRAN
 Fortran
 fortress
 fortresses
@@ -22216,7 +22205,6 @@ international
 internationality
 internationally
 interned
-INTERNET
 Internet
 internetwork
 interning
@@ -24945,7 +24933,6 @@ Mabel
 Mac
 Macadamia
 MacArthur
-Macarthur
 Macassar
 Macaulay
 Macaulayan
@@ -24953,8 +24940,6 @@ Macaulayism
 Macaulayisms
 Macbeth
 MacDonald
-Macdonald
-MacDougall
 Macdougall
 MacDraw
 mace
@@ -24963,7 +24948,6 @@ Macedon
 Macedonia
 Macedonian
 maces
-MacGregor
 Macgregor
 Mach
 Machiavelli
@@ -24976,10 +24960,7 @@ machinery
 machines
 machining
 macho
-MacIntosh
-Macintosh
 macintosh
-MacKenzie
 Mackenzie
 mackerel
 Mackey
@@ -24987,7 +24968,6 @@ Mackinac
 Mackinaw
 MacMahon
 MacMillan
-Macmillan
 Macon
 MacPaint
 macro
@@ -27131,7 +27111,6 @@ multicasting
 multicasts
 multicellular
 multicomputer
-MULTICS
 Multics
 multidimensional
 multilateral
@@ -29594,7 +29573,6 @@ partridges
 parts
 party
 Pasadena
-PASCAL
 Pascal
 Paso
 pass
@@ -29974,7 +29952,6 @@ peppery
 peppy
 Pepsi
 PepsiCo
-Pepsico
 peptide
 per
 perceivable
@@ -35493,6 +35470,7 @@ ruled
 ruler
 rulers
 rules
+rulez
 ruling
 rulings
 rum
@@ -37452,7 +37430,6 @@ simplistic
 simply
 Simpson
 Sims
-SIMULA
 Simula
 simulate
 simulated
@@ -41091,7 +41068,6 @@ teller
 tellers
 telling
 tells
-TELNET
 Telnet
 temper
 temperament
@@ -41146,7 +41122,6 @@ tending
 tends
 tenement
 tenements
-TENEX
 Tenex
 tenfold
 Tenneco
@@ -41257,7 +41232,6 @@ testing
 testings
 tests
 Teutonic
-TeX
 Tex
 Texaco
 Texan
@@ -42673,7 +42647,6 @@ ultimate
 ultimately
 ultra
 ultrasonic
-ULTRIX
 Ultrix
 Ulysses
 umbrage
@@ -43068,7 +43041,6 @@ universe
 universes
 universities
 university
-UNIX
 Unix
 unjust
 unjustifiable

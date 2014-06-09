@@ -7,7 +7,7 @@ import scala.io.Source
  */
 object PhoneKeys {
 
-  val in = Source.fromFile(getClass.getResource("dictionary.txt").getFile)
+  val in = Source.fromFile(getClass.getResource("linuxwords.txt").getFile)
   val words = in.getLines.toList filter (word => word forall (c => c.isLetter))
   val mnem = Map('2' -> "ABC", '3' -> "DEF", '4' -> "GHI", '5' -> "JKL", '6' -> "MNO", '7' -> "PQRS", '8' -> "TUV", '9' -> "WXYZ")
 

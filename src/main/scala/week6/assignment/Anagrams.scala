@@ -119,7 +119,7 @@ object Anagrams {
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences =
     if (y.isEmpty) x
-    else for (x1 <- x; y1 <- y if x1._1 != y1._1) yield x1
+    else x filterNot (x1 => y.exists(y1 => y1._1 == x1._1))
 
   /**
    * Returns a list of all anagram sentences of the given sentence.

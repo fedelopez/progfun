@@ -12,16 +12,6 @@ class AnagramsTest extends FunSuite {
 
   import Anagrams._
 
-  test("playground: combinations") {
-
-
-    val abba: Occurrences = List(('a', 2), ('b', 2))
-    val tuples = for (x <- abba; num <- 1 to x._2) yield (x._1, num)
-
-    //todo: for each tuple, combine it with all the other tuples
-
-  }
-
   test("wordOccurrences: abcd") {
     val res: Anagrams.Occurrences = wordOccurrences("abcd")
     assert(res === List(('a', 1), ('b', 1), ('c', 1), ('d', 1)))
@@ -69,6 +59,22 @@ class AnagramsTest extends FunSuite {
     val lard = List(('a', 1), ('d', 1), ('l', 2), ('r', 1))
     val l = List()
     assert(subtract(lard, l) === lard)
+  }
+
+  test("subtract: lard - rd") {
+    val lard = List(('a', 1), ('d', 1), ('l', 2), ('r', 1))
+    val rd = List(('d', 1), ('r', 1))
+
+    val la = List(('a', 1), ('l', 2))
+    assert(subtract(lard, rd) === la)
+  }
+
+  test("subtract: less frequency") {
+    val ad = List(('a', 1), ('d', 2))
+    val d = List(('d', 1))
+
+    val res = List(('a', 1))
+    assert(subtract(ad, d) === res)
   }
 
   test("combinations: []") {

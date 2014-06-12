@@ -104,7 +104,25 @@ object Anagrams {
    * Note that the order of the occurrence list subsets does not matter -- the subsets
    * in the example above could have been displayed in some other order.
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+  def combinations(occurrences: Occurrences): List[Occurrences] = {
+    val tuples = for (x <- occurrences; num <- 1 to x._2) yield (x._1, num)
+
+    val res = for {
+      tuple <- tuples
+
+      j <- 0 to occurrences.length
+
+      remove: List[(Char, Int)] = tuples.filter(t => tuple._1 == t._1)
+
+      others: Occurrences = subtract(tuples, remove)
+
+      taken: List[(Char, Int)] = others.take(j)
+
+    } yield tuple :: taken
+
+
+    res ::: List(Nil)
+  }
 
   /**
    * Subtracts occurrence list `y` from occurrence list `x`.

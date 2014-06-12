@@ -81,6 +81,22 @@ class AnagramsTest extends FunSuite {
     assert(combinations(Nil) === List(Nil))
   }
 
+  test("combinations: [(a, 1)]") {
+    val res: List[Anagrams.Occurrences] = combinations(List(('a', 1)))
+    assert(res.length === 2)
+    assert(res.contains(List()))
+    assert(res.contains(List(('a', 1))))
+  }
+
+  test("combinations: [(a, 1), (b, 1)]") {
+    val res: List[Anagrams.Occurrences] = combinations(List(('a', 1), ('b', 1)))
+    assert(res.length === 4)
+    assert(res.contains(List()))
+    assert(res.contains(List(('a', 1))))
+    assert(res.contains(List(('b', 1))))
+    assert(res.contains(List(('a', 1), ('b', 1))))
+  }
+
   test("combinations: abba") {
     val abba = List(('a', 2), ('b', 2))
     val abbacomb = List(
@@ -94,7 +110,12 @@ class AnagramsTest extends FunSuite {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
-    assert(combinations(abba).toSet === abbacomb.toSet)
+    val toSet: Set[Anagrams.Occurrences] = combinations(abba).toSet
+
+    //Set(List((a,1)), List((b,1)), List((b,2), (a,2)), List((b,2)), List(), List((b,1), (a,2)), List((a,2)))
+    //Set(List((a,1)), List((b,1)), List((b,2)), List((a,1), (b,1)), List(), List((a,2), (b,1)), List((a,2)), List((a,1), (b,2)), List((a,2), (b,2)))
+
+    assert(toSet === abbacomb.toSet)
   }
 
   test("sentence anagrams: []") {

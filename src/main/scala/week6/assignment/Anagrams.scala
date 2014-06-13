@@ -105,21 +105,21 @@ object Anagrams {
    * in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    val tuples = for (x <- occurrences; num <- 1 to x._2) yield (x._1, num)
-
+    // todo: sort occurrences by alpha order
     val res = for {
-      tuple <- tuples
+      occurrence <- occurrences
+      i <- 1 to occurrence._2
+      tuple = (occurrence._1, i)
 
-      j <- 0 to occurrences.length
+      others: Occurrences = occurrences.filter(t => tuple._1 < t._1)
+      j <- 0 to others.length
 
-      remove: List[(Char, Int)] = tuples.filter(t => tuple._1 == t._1)
+      taken: Occurrences = others.take(j)
 
-      others: Occurrences = subtract(tuples, remove)
+      otherCombinations: List[Occurrences] = combinations(taken)
+      otherCombination <- otherCombinations
 
-      taken: List[(Char, Int)] = others.take(j)
-
-    } yield tuple :: taken
-
+    } yield tuple :: otherCombination
 
     res ::: List(Nil)
   }

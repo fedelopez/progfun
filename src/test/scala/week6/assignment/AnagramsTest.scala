@@ -112,9 +112,6 @@ class AnagramsTest extends FunSuite {
     )
     val toSet: Set[Anagrams.Occurrences] = combinations(abba).toSet
 
-    //Set(List((a,1)), List((b,1)), List((b,2), (a,2)), List((b,2)), List(), List((b,1), (a,2)), List((a,2)))
-    //Set(List((a,1)), List((b,1)), List((b,2)), List((a,1), (b,1)), List(), List((a,2), (b,1)), List((a,2)), List((a,1), (b,2)), List((a,2), (b,2)))
-
     assert(toSet === abbacomb.toSet)
   }
 

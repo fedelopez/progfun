@@ -121,7 +121,7 @@ object Anagrams {
 
     } yield tuple :: otherCombination
 
-    res ::: List(Nil)
+    res.distinct ::: List(Nil)
   }
 
   /**

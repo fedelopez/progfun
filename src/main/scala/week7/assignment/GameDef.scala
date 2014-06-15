@@ -18,7 +18,7 @@ trait GameDef {
    *
    * Illustration:
    *
-   * 0 1 2 3   <- y axis
+   * - 0 1 2 3   <- y axis
    * 0 o o o o
    * 1 o o o o
    * 2 o # o o    # is at position Pos(2, 1)

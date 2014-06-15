@@ -21,6 +21,13 @@ class AnagramsTest extends FunSuite {
     assert(wordOccurrences("Robert") === List(('b', 1), ('e', 1), ('o', 1), ('r', 2), ('t', 1)))
   }
 
+  test("wordOccurrences: uppercase") {
+    val expected: List[(Char, Int)] = List(('i', 1), ('l', 1), ('n', 1), ('u', 1), ('x', 1))
+
+    assert(wordOccurrences("LINUX") === expected)
+    assert(wordOccurrences("lInUx") === expected)
+  }
+
   test("sentenceOccurrences: abcd e") {
     assert(sentenceOccurrences(List("abcd", "e")) === List(('a', 1), ('b', 1), ('c', 1), ('d', 1), ('e', 1)))
   }
@@ -33,8 +40,25 @@ class AnagramsTest extends FunSuite {
     assert(dictionaryByOccurrences.get(List(('a', 1), ('e', 1), ('t', 1))).map(_.toSet) === Some(Set("ate", "eat", "tea")))
   }
 
+  test("dictionaryByOccurrences: linux") {
+    val linux = List(('i', 1), ('l', 1), ('n', 1), ('u', 1), ('x', 1))
+    assert(dictionaryByOccurrences(linux) === List("Linux"))
+  }
+
+  test("dictionaryByOccurrences: unexisting") {
+    assert(dictionaryByOccurrences(List(('i', 1))) === List())
+    assert(dictionaryByOccurrences(List(('z', 1))) === List())
+    assert(dictionaryByOccurrences(List(('q', 1))) === List())
+    assert(dictionaryByOccurrences(List(('d', 2))) === List())
+  }
+
   test("word anagrams: married") {
     assert(wordAnagrams("married").toSet === Set("married", "admirer"))
+  }
+
+  test("word anagrams: uppercase") {
+    assert(wordAnagrams("LINUX").toSet === Set("Linux"))
+    assert(wordAnagrams("linux").toSet === Set("Linux"))
   }
 
   test("word anagrams: player") {
@@ -73,8 +97,23 @@ class AnagramsTest extends FunSuite {
     val ad = List(('a', 1), ('d', 2))
     val d = List(('d', 1))
 
-    val res = List(('a', 1))
+    val res = List(('a', 1), ('d', 1))
     assert(subtract(ad, d) === res)
+  }
+
+  test("subtract: less frequency with 3 elements") {
+    val tuples = List(('a', 1), ('d', 3), ('f', 4))
+    val toSubtract = List(('d', 1), ('f', 3))
+
+    val res = List(('a', 1), ('d', 2), ('f', 1))
+    assert(subtract(tuples, toSubtract) === res)
+  }
+
+  test("subtract: both are equal") {
+    val tuples = List(('d', 1), ('f', 3))
+    val toSubtract = List(('d', 1), ('f', 3))
+
+    assert(subtract(tuples, toSubtract).isEmpty)
   }
 
   test("combinations: []") {
@@ -110,9 +149,50 @@ class AnagramsTest extends FunSuite {
       List(('a', 1), ('b', 2)),
       List(('a', 2), ('b', 2))
     )
-    val toSet: Set[Anagrams.Occurrences] = combinations(abba).toSet
+    val toSet: Set[Occurrences] = combinations(abba).toSet
 
     assert(toSet === abbacomb.toSet)
+  }
+
+  test("sentenceAnagramsAcc") {
+
+    val abba = List(('a', 2), ('b', 2))
+
+    val occInDic1 = List(('a', 1))
+    val occInDic2 = List(('a', 2), ('b', 1))
+    val occInDic3 = List(('b', 1))
+
+    val combinationsInDictionary: List[Occurrences] = List(occInDic3, occInDic2, occInDic1)
+
+    val res: List[List[Occurrences]] = sentenceAnagramsAcc(abba, combinationsInDictionary)
+    assert(res.length == 2)
+    assert(res.contains(List(occInDic2, occInDic3)))
+    assert(res.contains(List(occInDic3, occInDic2)))
+  }
+
+  test("isCombination") {
+
+    val abba = List(('a', 2), ('b', 2))
+
+    val occInDic1 = List(('a', 1))
+    val occInDic2 = List(('a', 2), ('b', 1))
+    val occInDic3 = List(('b', 1))
+
+    assert(isCombination(List(occInDic2, occInDic3), abba))
+    assert(!isCombination(List(occInDic1, occInDic3), abba))
+    assert(!isCombination(List(occInDic1, occInDic2), abba))
+    assert(!isCombination(List(occInDic1, occInDic2, occInDic3), abba))
+  }
+
+  test("isCombination: bug") {
+
+    val abba = List(('a', 2), ('b', 2))
+
+    val occInDic1 = List(('a', 1))
+    val occInDic2 = List(('a', 2), ('b', 1))
+    val occInDic3 = List(('b', 1))
+
+    assert(!isCombination(List(occInDic2, occInDic1, occInDic3), abba))
   }
 
   test("sentence anagrams: []") {
@@ -144,6 +224,7 @@ class AnagramsTest extends FunSuite {
       List("rulez", "Linux"),
       List("Linux", "rulez")
     )
-    assert(sentenceAnagrams(sentence).toSet === anas.toSet)
+    val anagrams: List[Sentence] = sentenceAnagrams(sentence)
+    assert(anagrams.toSet === anas.toSet)
   }
 }

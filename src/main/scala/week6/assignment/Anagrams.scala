@@ -40,19 +40,17 @@ object Anagrams {
    * same character, and are represented as a lowercase character in the occurrence list.
    */
   def wordOccurrences(word: Word): Occurrences = {
-    val sorted: String = word.toLowerCase
-    val res: Map[(Char, Int), String] = sorted groupBy (c => (c, sorted.count(char => char == c)))
+    val lowercase: String = word.toLowerCase
+    val res: Map[(Char, Int), String] = lowercase groupBy (c => (c, lowercase.count(char => char == c)))
     val map: Map[Char, Int] = for (tuple <- res) yield tuple._1
     map.toList.sortWith((t1, t2) => t1._1 < t2._1)
   }
-
 
   /** Converts a sentence into its character occurrence list. */
   def sentenceOccurrences(s: Sentence): Occurrences = {
     val map: List[Char] = s.flatMap(word => word)
     wordOccurrences(map mkString "")
   }
-
 
   /**
    * The `dictionaryByOccurrences` is a `Map` from different occurrences to a sequence of all
@@ -72,14 +70,13 @@ object Anagrams {
    */
   lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = {
     val tuples: List[(Occurrences, Word)] = for (word <- dictionary) yield wordOccurrences(word) -> word
-    val grouped: Map[Occurrences, List[(Occurrences, Anagrams.Word)]] = tuples groupBy (x => x._1)
-    for (x <- grouped) yield x._1 -> x._2.map(z => z._2)
+    val grouped: Map[Occurrences, List[(Occurrences, Word)]] = tuples groupBy (x => x._1)
+    (for (x <- grouped) yield x._1 -> x._2.map(z => z._2)).withDefaultValue(List())
   }
-
 
   /** Returns all the anagrams of a given word. */
   def wordAnagrams(word: Word): List[Word] =
-    dictionaryByOccurrences.filter(tuple => tuple._2.contains(word)).head._2
+    dictionaryByOccurrences.filter(tuple => tuple._2.exists(elem => elem.equalsIgnoreCase(word))).head._2
 
   /**
    * Returns the list of all subsets of the occurrence list.
@@ -105,7 +102,6 @@ object Anagrams {
    * in the example above could have been displayed in some other order.
    */
   def combinations(occurrences: Occurrences): List[Occurrences] = {
-    // todo: sort occurrences by alpha order
     val res = for {
       occurrence <- occurrences
       i <- 1 to occurrence._2
@@ -137,7 +133,21 @@ object Anagrams {
    */
   def subtract(x: Occurrences, y: Occurrences): Occurrences =
     if (y.isEmpty) x
-    else x filterNot (x1 => y.exists(y1 => y1._1 == x1._1))
+    else {
+      val tuples = {
+        for {
+          occurrence <- x
+          other = y find (y1 => y1._1 == occurrence._1)
+          result = doSubtract(occurrence, other)
+        } yield result
+      }
+      tuples.filter(elem => elem._2 != 0)
+    }
+
+  def doSubtract(original: (Char, Int), updated: Option[(Char, Int)]): (Char, Int) = {
+    if (updated.isEmpty) original
+    else (updated.get._1, original._2 - updated.get._2)
+  }
 
   /**
    * Returns a list of all anagram sentences of the given sentence.
@@ -179,7 +189,49 @@ object Anagrams {
    * so it has to be returned in this list.
    *
    * Note: There is only one anagram of an empty sentence.
+   *
+   * todo: not working
    */
-  def sentenceAnagrams(sentence: Sentence): List[Sentence] = ???
+  def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
+    val targetOccurrences: Occurrences = sentenceOccurrences(sentence)
+    val occurrencesInDictionary: List[Occurrences] = combinations(targetOccurrences).filter(elem => dictionaryByOccurrences.contains(elem))
 
+    val acc: List[List[Occurrences]] = sentenceAnagramsAcc(targetOccurrences, occurrencesInDictionary)
+    val t = for {
+      accRes: List[Occurrences] <- acc
+      map: List[List[Word]] = accRes.map(dictionaryByOccurrences)
+      listWord: List[Word] <- map
+    } yield listWord
+
+    t
+  }
+
+  def sentenceAnagramsAcc(targetOccurrences: Occurrences, occurrencesInDictionary: List[Occurrences]): List[List[Occurrences]] = {
+    for {
+      occurrence <- occurrencesInDictionary
+      others = occurrencesInDictionary.filter(p => p != occurrence)
+      i <- 1 to others.length
+      take: List[Occurrences] = others.take(i)
+
+      occurrenceList: List[Occurrences] = occurrence :: take
+      if isCombination(occurrenceList, targetOccurrences)
+
+    } yield occurrenceList
+  }
+
+  def isCombination(occurrenceList: List[Occurrences], target: Occurrences): Boolean = {
+    if (occurrenceList.isEmpty) false
+    else {
+      val subtracted: Occurrences = subtract(target, occurrenceList.head)
+      if (subtracted == target) {
+        false
+      }
+      else {
+        if (subtracted.size == 0) {
+          true
+        }
+        else isCombination(occurrenceList.tail, subtracted)
+      }
+    }
+  }
 }

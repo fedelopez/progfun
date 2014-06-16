@@ -14,12 +14,13 @@ class BloxorzTest extends FunSuite {
      * is a valid solution, i.e. leads to the goal.
      */
     def solve(ls: List[Move]): Block =
-      ls.foldLeft(startBlock) { case (block, move) => move match {
-        case Left => block.left
-        case Right => block.right
-        case Up => block.up
-        case Down => block.down
-      }
+      ls.foldLeft(startBlock) {
+        case (block, move) => move match {
+          case Left => block.left
+          case Right => block.right
+          case Up => block.up
+          case Down => block.down
+        }
       }
   }
 
@@ -40,6 +41,17 @@ class BloxorzTest extends FunSuite {
   test("terrain function level 1") {
     new Level1 {
       assert(terrain(Pos(0, 0)), "0,0")
+      assert(terrain(Pos(0, 1)), "0,1")
+      assert(terrain(Pos(0, 2)), "0,1")
+      assert(!terrain(Pos(0, 3)), "0,3")
+      assert(!terrain(Pos(0, 4)), "0,4")
+
+      assert(terrain(Pos(1, 5)), "1,5")
+
+      assert(!terrain(Pos(3, 0)), "3,0")
+
+      assert(terrain(Pos(4, 9)), "4,9")
+      assert(!terrain(Pos(4, 10)), "4,10")
       assert(!terrain(Pos(4, 11)), "4,11")
     }
   }

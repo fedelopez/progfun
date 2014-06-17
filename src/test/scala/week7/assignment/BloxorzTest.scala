@@ -63,6 +63,27 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("isStanding") {
+    new Level1 {
+      val block = new Block(Pos(1, 1), Pos(1, 1))
+      assert(block.isStanding)
+    }
+  }
+
+  test("isStanding: vertically laid down") {
+    new Level1 {
+      val block = new Block(Pos(3, 2), Pos(4, 2))
+      assert(!block.isStanding)
+    }
+  }
+
+  test("isStanding: horizontally laid down") {
+    new Level1 {
+      val block = new Block(Pos(1, 1), Pos(1, 2))
+      assert(!block.isStanding)
+    }
+  }
+
   test("optimal solution for level 1") {
     new Level1 {
       assert(solve(solution) == Block(goal, goal))

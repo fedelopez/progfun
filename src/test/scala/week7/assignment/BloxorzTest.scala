@@ -96,6 +96,13 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("startBlock: block at the start position of the game") {
+    new Level1 {
+      assert(startBlock.b1 == startPos)
+      assert(startBlock.b2 == startPos)
+    }
+  }
+
   test("optimal solution for level 1") {
     new Level1 {
       assert(solve(solution) == Block(goal, goal))

@@ -103,6 +103,40 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("neighbors: start block") {
+    new Level1 {
+      val neighbors: List[(Block, Move)] = startBlock.neighbors
+      assert(neighbors.length == 4)
+      assert(neighbors.contains((new Block(Pos(-1, 1), Pos(0, 1)), Up)))
+      assert(neighbors.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
+      assert(neighbors.contains((new Block(Pos(1, -1), Pos(1, 0)), Left)))
+      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
+    }
+  }
+
+  test("neighbors: bounded block") {
+    new Level1 {
+      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).neighbors
+      assert(neighbors.length == 4)
+      assert(neighbors.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
+      assert(neighbors.contains((new Block(Pos(3, 2), Pos(4, 2)), Down)))
+      assert(neighbors.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
+      assert(neighbors.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
+    }
+  }
+
+  test("neighbors: laid down block") {
+    new Level1 {
+      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 3)).neighbors
+      assert(neighbors.length == 4)
+      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Up)))
+      assert(neighbors.contains((new Block(Pos(3, 2), Pos(3, 3)), Down)))
+      assert(neighbors.contains((new Block(Pos(2, 1), Pos(2, 1)), Left)))
+      assert(neighbors.contains((new Block(Pos(2, 4), Pos(2, 4)), Right)))
+    }
+  }
+
+
   test("optimal solution for level 1") {
     new Level1 {
       assert(solve(solution) == Block(goal, goal))

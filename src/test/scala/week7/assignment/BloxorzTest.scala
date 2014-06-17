@@ -56,6 +56,13 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("terrain function level 1: negative") {
+    new Level1 {
+      assert(!terrain(Pos(-1, 0)), "-1, 0")
+      assert(!terrain(Pos(0, -1)), "0, -1")
+    }
+  }
+
   test("findChar level 1") {
     new Level1 {
       assert(startPos == Pos(1, 1))
@@ -136,6 +143,24 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("legal neighbors: start block") {
+    new Level1 {
+      val neighbors: List[(Block, Move)] = startBlock.legalNeighbors
+      assert(neighbors.length == 2)
+      assert(neighbors.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
+      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
+    }
+  }
+
+  test("legal neighbors: bounded block becomes unbounded") {
+    new Level1 {
+      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).legalNeighbors
+      assert(neighbors.length == 3)
+      assert(neighbors.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
+      assert(neighbors.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
+      assert(neighbors.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
+    }
+  }
 
   test("optimal solution for level 1") {
     new Level1 {

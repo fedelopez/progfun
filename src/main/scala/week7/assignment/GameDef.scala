@@ -141,12 +141,14 @@ trait GameDef {
      * Returns `true` if the block is standing.
      */
     def isStanding: Boolean =
-      b1.x == b2.x && b2.y == b1.y
+      b1.x == b2.x && b1.y == b2.y
 
     /**
      * Returns `true` if the block is entirely inside the terrain.
      */
-    def isLegal: Boolean = ???
+    def isLegal: Boolean =
+      terrain(b1) && terrain(b2)
+
 
   }
 

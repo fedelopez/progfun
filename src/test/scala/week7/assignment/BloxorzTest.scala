@@ -84,6 +84,18 @@ class BloxorzTest extends FunSuite {
     }
   }
 
+  test("isLegal: block is entirely inside the terrain") {
+    new Level1 {
+      assert(new Block(Pos(1, 3), Pos(1, 4)).isLegal)
+      assert(new Block(Pos(1, 4), Pos(1, 5)).isLegal)
+      assert(!new Block(Pos(1, 5), Pos(1, 6)).isLegal)
+
+      assert(!new Block(Pos(3, 0), Pos(3, 1)).isLegal)
+      assert(!new Block(Pos(3, 0), Pos(3, 0)).isLegal)
+      assert(new Block(Pos(3, 1), Pos(3, 2)).isLegal)
+    }
+  }
+
   test("optimal solution for level 1") {
     new Level1 {
       assert(solve(solution) == Block(goal, goal))

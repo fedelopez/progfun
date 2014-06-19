@@ -112,53 +112,53 @@ class BloxorzTest extends FunSuite {
 
   test("neighbors: start block") {
     new Level1 {
-      val neighbors: List[(Block, Move)] = startBlock.neighbors
-      assert(neighbors.length == 4)
-      assert(neighbors.contains((new Block(Pos(-1, 1), Pos(0, 1)), Up)))
-      assert(neighbors.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
-      assert(neighbors.contains((new Block(Pos(1, -1), Pos(1, 0)), Left)))
-      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
+      val actual: List[(Block, Move)] = startBlock.neighbors
+      assert(actual.length == 4)
+      assert(actual.contains((new Block(Pos(-1, 1), Pos(0, 1)), Up)))
+      assert(actual.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
+      assert(actual.contains((new Block(Pos(1, -1), Pos(1, 0)), Left)))
+      assert(actual.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
     }
   }
 
   test("neighbors: bounded block") {
     new Level1 {
-      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).neighbors
-      assert(neighbors.length == 4)
-      assert(neighbors.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
-      assert(neighbors.contains((new Block(Pos(3, 2), Pos(4, 2)), Down)))
-      assert(neighbors.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
-      assert(neighbors.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
+      val actual: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).neighbors
+      assert(actual.length == 4)
+      assert(actual.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
+      assert(actual.contains((new Block(Pos(3, 2), Pos(4, 2)), Down)))
+      assert(actual.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
+      assert(actual.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
     }
   }
 
   test("neighbors: laid down block") {
     new Level1 {
-      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 3)).neighbors
-      assert(neighbors.length == 4)
-      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Up)))
-      assert(neighbors.contains((new Block(Pos(3, 2), Pos(3, 3)), Down)))
-      assert(neighbors.contains((new Block(Pos(2, 1), Pos(2, 1)), Left)))
-      assert(neighbors.contains((new Block(Pos(2, 4), Pos(2, 4)), Right)))
+      val actual: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 3)).neighbors
+      assert(actual.length == 4)
+      assert(actual.contains((new Block(Pos(1, 2), Pos(1, 3)), Up)))
+      assert(actual.contains((new Block(Pos(3, 2), Pos(3, 3)), Down)))
+      assert(actual.contains((new Block(Pos(2, 1), Pos(2, 1)), Left)))
+      assert(actual.contains((new Block(Pos(2, 4), Pos(2, 4)), Right)))
     }
   }
 
   test("legal neighbors: start block") {
     new Level1 {
-      val neighbors: List[(Block, Move)] = startBlock.legalNeighbors
-      assert(neighbors.length == 2)
-      assert(neighbors.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
-      assert(neighbors.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
+      val actual: List[(Block, Move)] = startBlock.legalNeighbors
+      assert(actual.length == 2)
+      assert(actual.contains((new Block(Pos(2, 1), Pos(3, 1)), Down)))
+      assert(actual.contains((new Block(Pos(1, 2), Pos(1, 3)), Right)))
     }
   }
 
   test("legal neighbors: bounded block becomes unbounded") {
     new Level1 {
-      val neighbors: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).legalNeighbors
-      assert(neighbors.length == 3)
-      assert(neighbors.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
-      assert(neighbors.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
-      assert(neighbors.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
+      val actual: List[(Block, Move)] = new Block(Pos(2, 2), Pos(2, 2)).legalNeighbors
+      assert(actual.length == 3)
+      assert(actual.contains((new Block(Pos(0, 2), Pos(1, 2)), Up)))
+      assert(actual.contains((new Block(Pos(2, 0), Pos(2, 1)), Left)))
+      assert(actual.contains((new Block(Pos(2, 3), Pos(2, 4)), Right)))
     }
   }
 
@@ -169,6 +169,16 @@ class BloxorzTest extends FunSuite {
       assert(!done(new Block(Pos(1, 4), Pos(1, 5))))
 
       assert(done(new Block(goal, goal)))
+    }
+  }
+
+  test("neighborsWithHistory: start block") {
+    new Level1 {
+      val actual: Stream[(Block, List[Move])] = neighborsWithHistory(startBlock, List(Left, Up))
+
+      assert(actual.length === 2)
+      assert(actual.contains(Block(Pos(1, 2), Pos(1, 3)), List(Right, Left, Up)))
+      assert(actual.contains(Block(Pos(2, 1), Pos(3, 1)), List(Down, Left, Up)))
     }
   }
 

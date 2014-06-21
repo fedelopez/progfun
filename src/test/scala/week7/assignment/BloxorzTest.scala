@@ -24,6 +24,19 @@ class BloxorzTest extends FunSuite {
       }
   }
 
+  trait LevelImpossible extends SolutionChecker {
+    /* terrain for level with impossible solution*/
+
+    val level =
+      """------
+        |--ST--
+        |--o---
+        |--oo--
+        |------""".stripMargin
+
+    val optsolution = List(Down, Right, Up)
+  }
+
   trait Level0 extends SolutionChecker {
     /* terrain for level 0*/
 
@@ -215,6 +228,12 @@ class BloxorzTest extends FunSuite {
     new Level0 {
       assert(solve(solution) === Block(Pos(1, 3), Pos(1, 3)))
       assert(solution === List(Down, Right, Up))
+    }
+  }
+
+  test("solution when no possible solution") {
+    new LevelImpossible {
+      assert(solution === List())
     }
   }
 

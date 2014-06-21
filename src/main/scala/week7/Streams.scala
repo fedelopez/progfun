@@ -34,11 +34,11 @@ object Streams {
    * The Sieve of Eratosthenes is an ancient technique to calculate prime numbers.
    * The idea is as follows:
    *
-   * ▶ Start with all integers from 2, the ﬁrst prime number.
+   * ▶ Start with all integers from 2, the first prime number.
    * Eliminate all multiples of 2.
-   * ▶ The ﬁrst element of the resulting list is 3, a prime number.
+   * ▶ The first element of the resulting list is 3, a prime number.
    * Eliminate all multiples of 3.
-   * Iterate forever. At each step, the ﬁrst number in the list is a prime number and we eliminate all its multiples.
+   * Iterate forever. At each step, the first number in the list is a prime number and we eliminate all its multiples.
    */
   def sieveOfEratosthenes(s: Stream[Int]): Stream[Int] =
     s.head #:: sieveOfEratosthenes(s.tail filter (_ % s.head != 0))

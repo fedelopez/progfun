@@ -55,7 +55,7 @@ class StreamsTest extends FunSuite {
     println(list)
   }
 
-  test("sieve") {
+  test("Sieve of Eratosthenes") {
     val primes = sieveOfEratosthenes(from(2))
     val take: Stream[Int] = primes.take(1000)
     println(take.toList)
@@ -67,7 +67,7 @@ class StreamsTest extends FunSuite {
 
   }
 
-  test("sqrt:  add isGoodEnough later") {
+  test("sqrt: add isGoodEnough later") {
     def isGoodEnough(guess: Double, x: Double) =
       math.abs((guess * guess - x) / x) < 0.0001
 

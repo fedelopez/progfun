@@ -105,6 +105,6 @@ trait Solver extends GameDef {
    * position.
    */
   lazy val solution: List[Move] = {
-    pathsToGoal.minBy(x => x._2.length)._2
+    pathsToGoal.minBy(x => x._2.length)._2.reverse
   }
 }

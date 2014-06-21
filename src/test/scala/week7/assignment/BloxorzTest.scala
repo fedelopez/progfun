@@ -213,8 +213,8 @@ class BloxorzTest extends FunSuite {
 
   test("optimal solution for level 0") {
     new Level0 {
-      assert(solve(solution) == Block(Pos(1, 3), Pos(1, 3)))
-      assert(solution.length == optsolution.length)
+      assert(solve(solution) === Block(Pos(1, 3), Pos(1, 3)))
+      assert(solution === List(Down, Right, Up))
     }
   }
 

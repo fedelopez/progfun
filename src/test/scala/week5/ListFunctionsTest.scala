@@ -73,10 +73,11 @@ class ListFunctionsTest extends FunSuite {
 
   test("folding") {
     val list: List[Int] = List(1, 2, 3, 4, 5)
-    val result1: Int = list.foldLeft(1)((x: Int, y: Int) => x + y)
+    val acc: Int = 1
+    val result: Int = list.foldLeft(acc)((x: Int, y: Int) => x + y)
 
-    println(result1)
-    assert(result1 === 16) // if finds an empty list, fold left uses the accumulator 1
+    println(result)
+    assert(result === 16) // if finds an empty list, fold left uses the accumulator "acc"
   }
 
 
